@@ -67,7 +67,13 @@ shape.lineTo(10,10);
 shape.lineTo(10,0);
 shape.lineTo(0,0);
 //创建罗阔的扫描轨迹（3D样条曲线）
-let curve = new THREE.SplineCurve3([
+// let curve = new THREE.SplineCurve3([ // SplineCurve3方法已废弃
+//     new THREE.Vector3(-10,-50,-50),
+//     new THREE.Vector3(10,0,0),
+//     new THREE.Vector3(8,50,50),
+//     new THREE.Vector3(-5,0,100)
+// ]);
+let curve = new THREE.CatmullRomCurve3([
     new THREE.Vector3(-10,-50,-50),
     new THREE.Vector3(10,0,0),
     new THREE.Vector3(8,50,50),
@@ -75,14 +81,20 @@ let curve = new THREE.SplineCurve3([
 ]);
 
 
-let geometry = new THREE.ExtrudeGeometry(
-    shape,
-    {
-        bevelEnabled:false,
-        extrudePath:curve,
-        steps:50
-    }
-);
+
+
+
+// let geometry = new THREE.ExtrudeGeometry(
+//     shape,
+//     {
+//         bevelEnabled:false,
+//         extrudePath:curve,
+//         steps:50
+//     }
+// );
+
+let geometry =  new THREE.TubeGeometry(curve,40,2,8,false);
+
 
 let material = new THREE.MeshPhongMaterial({color:0x0000ff});
 let mesh = new THREE.Mesh(geometry,material);
@@ -95,7 +107,7 @@ scene.add(mesh);
 
 
 
-
+//坐标系与原点
 let srcPoint = new THREE.Geometry();
 let pointPosition = new THREE.Vector3(0,0,0);
 srcPoint.vertices.push(pointPosition);
@@ -169,4 +181,4 @@ function render(){
 render();
 
 let controls = new THREE.OrbitControls(camera);//创建控件对象
-controls.addEventListener('change', render);//监听鼠标、键盘事件
+// controls.addEventListener('change', render);//监听鼠标、键盘事件
