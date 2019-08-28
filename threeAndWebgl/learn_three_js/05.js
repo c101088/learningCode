@@ -59,50 +59,103 @@ let scene = new THREE.Scene();
 // scene.add(mesh);
 
 //创建扫描网格模型
-let shape = new THREE.Shape();
-//创建四条直线绘制矩形
-shape.moveTo(0,0);
-shape.lineTo(0,10);
-shape.lineTo(10,10);
-shape.lineTo(10,0);
-shape.lineTo(0,0);
-//创建罗阔的扫描轨迹（3D样条曲线）
-// let curve = new THREE.SplineCurve3([ // SplineCurve3方法已废弃
+// let shape = new THREE.Shape();
+// //创建四条直线绘制矩形
+// shape.moveTo(0,0);
+// shape.lineTo(0,10);
+// shape.lineTo(10,10);
+// shape.lineTo(10,0);
+// shape.lineTo(0,0);
+// //创建罗阔的扫描轨迹（3D样条曲线）
+// // let curve = new THREE.SplineCurve3([ // SplineCurve3方法已废弃
+// //     new THREE.Vector3(-10,-50,-50),
+// //     new THREE.Vector3(10,0,0),
+// //     new THREE.Vector3(8,50,50),
+// //     new THREE.Vector3(-5,0,100)
+// // ]);
+// let curve = new THREE.CatmullRomCurve3([
 //     new THREE.Vector3(-10,-50,-50),
 //     new THREE.Vector3(10,0,0),
 //     new THREE.Vector3(8,50,50),
 //     new THREE.Vector3(-5,0,100)
 // ]);
-let curve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-10,-50,-50),
-    new THREE.Vector3(10,0,0),
-    new THREE.Vector3(8,50,50),
-    new THREE.Vector3(-5,0,100)
-]);
+//
+//
+// // let geometry = new THREE.ExtrudeGeometry(
+// //     shape,
+// //     {
+// //         bevelEnabled:false,
+// //         extrudePath:curve,
+// //         steps:50
+// //     }
+// // );
+// //圆管道
+// let geometry =  new THREE.TubeGeometry(curve,40,2,8,false);
+// let material = new THREE.MeshPhongMaterial({color:0x0000ff});
+// let mesh = new THREE.Mesh(geometry,material);
+// scene.add(mesh);
 
 
 
 
 
-// let geometry = new THREE.ExtrudeGeometry(
-//     shape,
-//     {
-//         bevelEnabled:false,
-//         extrudePath:curve,
-//         steps:50
-//     }
-// );
 
-let geometry =  new THREE.TubeGeometry(curve,40,2,8,false);
+//参数化曲面
+//创建平面网格模型
+// TODO:参数化曲面创建失败，日后深入研究
+// function plane(u,v,w){
+//     let width = 50,height =  100;
+//     let x= u*width;
+//     let y = v*height;
+//     let z = 0;
+//     w=new THREE.Vector3(x,y,z);
+//     return w;
+// }
+//
+// function paraboloid(u,v,w) {
+//     var k = 100;//x、y取值范围
+//     var a = 0.2;//旋转抛物面焦点
+//     var x = (u-0.5)*k;
+//     var y = (v-0.5)*k;
+//     var z = Math.pow(a,2)*(Math.pow(x,2)+Math.pow(y,2));
+//     w=new THREE.Vector3(x,y,z);
+//     return w;
+// }
+//
+//
+// let geometry  = new THREE.ParametricGeometry(plane,10,10);
+// let material =  new THREE.MeshPhongMaterial({
+//     color:0x0000ff,
+//     side:THREE.DoubleSide
+// });
+// material.wireframe=true;
+// let mesh = new THREE.Mesh(geometry,material);
+// scene.add(mesh);
+//
 
 
-let material = new THREE.MeshPhongMaterial({color:0x0000ff});
+
+
+/*
+    旋转造型
+ */
+
+let points = [
+    new THREE.Vector2(50,60),
+    new THREE.Vector2(25,0),
+    new THREE.Vector2(50,-60),
+];
+let geometry = new THREE.LatheGeometry(points,30);
+let material = new THREE.MeshPhongMaterial(
+    {
+        color:0x0000ff,
+        side:THREE.DoubleSide
+    }
+);
+
+// material.wireframe = true;
 let mesh = new THREE.Mesh(geometry,material);
 scene.add(mesh);
-
-
-
-
 
 
 
