@@ -22,6 +22,11 @@ THREE.PointerLockControls = function ( camera, domElement ) {
 
 	var PI_2 = Math.PI / 2;
 
+<<<<<<< HEAD
+=======
+	var vec = new Vector3();
+
+>>>>>>> 26a18d87d8c180790f0d5f6eace0079b78ce4975
 	function onMouseMove( event ) {
 
 		if ( scope.isLocked === false ) return;
@@ -106,6 +111,30 @@ THREE.PointerLockControls = function ( camera, domElement ) {
 
 	}();
 
+<<<<<<< HEAD
+=======
+	this.moveForward = function ( distance ) {
+
+		// move forward parallel to the xz-plane
+		// assumes camera.up is y-up
+
+		vec.setFromMatrixColumn( camera.matrix, 0 );
+
+		vec.crossVectors( camera.up, vec );
+
+		camera.position.addScaledVector( vec, distance );
+
+	};
+
+	this.moveRight = function ( distance ) {
+
+		vec.setFromMatrixColumn( camera.matrix, 0 );
+
+		camera.position.addScaledVector( vec, distance );
+
+	};
+
+>>>>>>> 26a18d87d8c180790f0d5f6eace0079b78ce4975
 	this.lock = function () {
 
 		this.domElement.requestPointerLock();
