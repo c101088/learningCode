@@ -57,8 +57,7 @@ scene.add(point);
 //     color:0x0000ff
 // });
 // let line = new THREE.Mesh(geometry,material);
-//
-//
+
 // scene.add(line);
 
 
@@ -129,42 +128,43 @@ scene.add(point);
 
 
 // 旋转网格模型
-let points = [
-    new THREE.Vector2(50,60),
-    new THREE.Vector2(25,0),
-    new THREE.Vector2(50,-60)
-];
-
-let geometry = new THREE.LatheGeometry(points,30);
-let material = new THREE.MeshPhongMaterial({
-    color:0x0000ff,
-    side:THREE.DoubleSide
-});
-
-material.wireframe = true;
-let mesh = new THREE.Mesh(geometry,material );
-scene.add(mesh);
-
-
-
-//根据样条曲线插值点并绘制旋转网格模型
-// let shape = new THREE.Shape();
 // let points = [
 //     new THREE.Vector2(50,60),
 //     new THREE.Vector2(25,0),
 //     new THREE.Vector2(50,-60)
 // ];
-// shape.splineThru(points);
-// let splinePoints = shape.getPoints(20);
-// let geometry = new THREE.LatheGeometry(splinePoints,30);
+//
+// let geometry = new THREE.LatheGeometry(points,30);
 // let material = new THREE.MeshPhongMaterial({
 //     color:0x0000ff,
 //     side:THREE.DoubleSide
 // });
 //
 // material.wireframe = true;
-// let mesh = new THREE.Mesh(geometry,material);
+// let mesh = new THREE.Mesh(geometry,material );
 // scene.add(mesh);
+
+
+
+//根据样条曲线插值点并绘制旋转网格模型
+let shape = new THREE.Shape();
+let points = [
+    new THREE.Vector2(50,60),
+    new THREE.Vector2(25,0),
+    new THREE.Vector2(50,-60)
+];
+shape.splineThru(points);
+let splinePoints= shape.getPoints(20);
+let geometry = new THREE.LatheGeometry(splinePoints,30);
+
+let material = new THREE.MeshPhongMaterial({
+    color:0x0000ff,
+    side:THREE.DoubleSide
+});
+
+material.wireframe = true;
+let mesh = new THREE.Mesh(geometry,material);
+scene.add(mesh);
 
 /**
  * 相机设置
