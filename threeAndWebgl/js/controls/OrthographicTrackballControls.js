@@ -265,11 +265,7 @@ THREE.OrthographicTrackballControls = function ( object, domElement ) {
 
 			mouseChange.copy( _panEnd ).sub( _panStart );
 
-<<<<<<< HEAD
 			if ( mouseChange.lengthSq() ) {
-=======
-			if ( mouseChange.lengthSq() > EPS ) {
->>>>>>> 26a18d87d8c180790f0d5f6eace0079b78ce4975
 
 				// Scale movement to keep clicked/dragged position under cursor
 				var scale_x = ( _this.object.right - _this.object.left ) / _this.object.zoom;
