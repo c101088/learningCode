@@ -1,4 +1,4 @@
-//测试失败了，使用threeBSP官网的代码可以运行成功，此处代码不行
+//几何变化的旋转、缩放与平移
 
 let scene = new THREE.Scene();
 
@@ -23,23 +23,50 @@ scene.add(srcLine);
 
 
 
+let box = new THREE.BoxGeometry(100,100,100);
+let material = new THREE.MeshLambertMaterial({color:0x0000ff});
+let mesh = new THREE.Mesh(box,material);
+scene.add(mesh);
 
-//几何体对象
-var cylinder = new THREE.CylinderGeometry(50,50,5,40);//圆柱
-var box = new THREE.BoxGeometry(40,5,40);//立方体
-//材质对象
-var material=new THREE.MeshPhongMaterial({color:0x0000ff});
-//网格模型对象
-var cylinderMesh=new THREE.Mesh(cylinder,material);//圆柱
-var boxMesh=new THREE.Mesh(box,material);//立方体
-//包装成ThreeBSP对象
-var cylinderBSP = new ThreeBSP(cylinderMesh);
-var boxBSP = new ThreeBSP(boxMesh);
-// var result = cylinderBSP.subtract(boxBSP);
-var result = cylinderBSP.intersect(boxBSP);
-//ThreeBSP对象转化为网格模型对象
-var mesh = result.toMesh();
-scene.add(mesh);//网格模型添加到场景中
+
+//缩放
+// mesh.scale.x=2.0;
+// mesh.scale.set(0.5,0.5,0.5);
+
+//平移
+// mesh.translateX(100);
+// let axis = new THREE.Vector3(0,1,0);
+// mesh.translateOnAxis(axis,100);
+
+//旋转
+// mesh.rotateX(Math.PI/4);
+// let axis = new THREE.Vector3(0,1,0);
+// mesh.rotateOnAxis(axis,Math.PI/4);
+
+
+//位置
+// mesh.position.y = 80;
+// mesh.position.set(80,80,10);
+// mesh.position.set(0,0,0);
+
+
+//角度
+// mesh.rotation.x= Math.PI/4;
+// mesh.rotation.set(Math.PI/4,Math.PI/4,Math.PI/4);
+
+//一个几何体，多个网格模型
+let mesh1 = new THREE.Mesh(box,material );
+mesh1.translateX(-80);
+mesh1.translateY(-80);
+scene.add(mesh1);
+
+//几何体的变换会导致其派生的网格模型全部变换
+box.translate(100,100,100);
+
+//点光源
+let point = new THREE.PointLight(0xFFFFFF);
+point.position.set(0,0,500);
+scene.add(point);
 
 
 
