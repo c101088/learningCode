@@ -43,9 +43,9 @@ function initVertexBuffers(gl) {
 
 function main (){
 
-    var canvas = document.getElementById("webgl");
-    var gl = getWebGLContext(canvas);
-    // var gl = canvas.getContext(canvas);
+    var canvas = document.getElementById( "webgl");
+    // var gl = getWebGLContext(canvas);
+    var gl = canvas.getContext("webgl");
     if(!gl){
         console.log("Failed to get the rendering context for WebGL");
         return ;
