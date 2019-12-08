@@ -1,13 +1,24 @@
 function loadShaderFromFile(filename, onLoadShader) {
-    axios.get('learn_js/webgl_varyingColor/Vshader_src.glsl')
+    axios.get('learn_js/webgl_texture/Vshader_src.glsl')
         .then(function(res){
             // console.log(res.data);
             let VSHADER_SOURCE=res.data;
 
-            axios.get('learn_js/webgl_varyingColor/Fshader_src.glsl')
+            axios.get('learn_js/webgl_texture/Fshader_src.glsl')
                 .then(function(res){
                     let FSHADER_SOURCE=res.data;
-                    onLoadShader(VSHADER_SOURCE,FSHADER_SOURCE);
+
+                    axios.get('learn_js/webgl_texture/img01.png')
+                        .then(function(res){
+                            let textureImg=new Image();
+                            textureImg.src= "learn_js/webgl_texture/img01.png";
+                            // console.log(textureImg);
+                            onLoadShader(VSHADER_SOURCE,FSHADER_SOURCE,textureImg);
+                        })
+
+
+
+
                 })
         })
         .catch(err=>{console.log(err)}
@@ -26,7 +37,7 @@ function main (){
         return ;
     }
 
-    function draw(VSHADER_SOURCE,FSHADER_SOURCE)
+    function draw(VSHADER_SOURCE,FSHADER_SOURCE,textureImg)
     {
 
         if (!initShaders(gl,VSHADER_SOURCE,FSHADER_SOURCE)){
@@ -37,12 +48,14 @@ function main (){
 
         let vertices = new Float32Array(
             [
-                0.0,0.5,1.0,0.0,0.0,
-                -0.5,-0.5,0.0,1.0,0.0,
-                0.5,-0.5,0.0,0.0,1.0
+               // 顶点坐标 ，纹理坐标
+               -0.5,0.5,0.0,1.0,
+                -0.5,-0.5,0.0,0.0,
+                0.5,0.5,1.0,1.0,
+                0.5,-0.5,1.0,0.0
             ]
         );
-        let n =3;
+        let n =4;
 
         //创建一个缓冲区兑现
         let vertexBuffer = gl.createBuffer();
@@ -60,18 +73,28 @@ function main (){
             return ;
         }
         //将缓冲区对象分配给a_Position变量
-        gl.vertexAttribPointer(a_Position, 2, gl.FLOAT,  false, FSize*5, 0);
+        gl.vertexAttribPointer(a_Position, 2, gl.FLOAT,  false, FSize*4, 0);
         gl.enableVertexAttribArray(a_Position);
 
-        let a_Color = gl.getAttribLocation(gl.program,"a_Color");
-        if(a_Color<0)
+        let a_TexCoord = gl.getAttribLocation(gl.program,"a_TexCoord");
+        if(a_TexCoord<0)
         {
-            console.log("failed to get the storage location of a_Color");
+            console.log("failed to get the storage location of a_TexCoord");
             return ;
         }
 
-        gl.vertexAttribPointer(a_Color,3,gl.FLOAT,false,FSize*5,FSize*2);
-        gl.enableVertexAttribArray(a_Color);
+        gl.vertexAttribPointer(a_TexCoord,3,gl.FLOAT,false,FSize*4,FSize*2);
+        gl.enableVertexAttribArray(a_TexCoord);
+
+        let texture = gl.createTexture();
+        let u_Sampler = gl.getUniformLocation(gl.program,"u_Sampler");
+
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,1);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D,texture);
+        gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+        gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,textureImg);
+        gl.uniform1i(u_Sampler,0);
 
         gl.clearColor(0.0,0.0,0.0,1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
