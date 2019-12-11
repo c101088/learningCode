@@ -26,26 +26,34 @@ function loadShaderFromFile(filename, onLoadShader) {
                         console.log('顶点写入缓存失败！');
                         return false;
                     }
-                    gl.clearColor(0.0,0.0,0.0,1.0);
+                    // gl.clearColor(0.0,0.0,0.0,1.0);
 
 
                     let u_MvpMatrix = gl.getUniformLocation(gl.program,"u_MvpMatrix");
                     if(u_MvpMatrix<0)
                     {
                         console.log("加载u_MvpMatrix失败");
+                        return;
                     }
 
-                    let mvpMatrix = new Matrix4();
-                    mvpMatrix.setPerspective(30,1,1,100);
-                    mvpMatrix.setLookAt(3,3,7,0,0,0,0,1,0);
-                    // console.log(viewMatrix);
+                    // let mvpMatrix = new Matrix4();
+                    // mvpMatrix.setPerspective(30,1,1,100);
+                    // mvpMatrix.setLookAt(3,3,7,0,0,0,0,1,0);
+                    // // console.log(viewMatrix);
 
+                    let viewMatrix = new Matrix4();
+                    viewMatrix.setLookAt(3,3,7,0,0,0,0,1,0);
+                    let  modelMatrix = new Matrix4();
+                    modelMatrix.setRotate(0,0,0,1);
+                    let projMatrix = new Matrix4();
+                    projMatrix.setPerspective(30,canvas.width/canvas.height,1,100);
+                    let mvpMatrix = projMatrix.multiply(viewMatrix.multiply(modelMatrix));
                     gl.uniformMatrix4fv(u_MvpMatrix,false,mvpMatrix.elements);
                     // 指定清除颜色
 
-                    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+                    // gl.clearColor(0.0, 0.5, 0.5, 1.0);
                     gl.enable(gl.DEPTH_TEST);
-                    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+                    // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
                     gl.drawElements(gl.TRIANGLES,n,gl.UNSIGNED_BYTE,0);
                     // gl.drawElements(gl.LINE_LOOP,n,gl.UNSIGNED_BYTE,0);
